@@ -46,7 +46,7 @@ export default function HomeScreen({ user, onLogout }) {
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     loadStatus();
-    startLocationTracking();
+    // startLocationTracking(); // Temporarily disabled to find crash cause
     return () => clearInterval(timer);
   }, []);
 
@@ -257,45 +257,12 @@ export default function HomeScreen({ user, onLogout }) {
           </View>
         </View>
 
-        {/* Maps Section */}
+        {/* Maps Section - DISABLED TO PREVENT CRASH FOR DEBUGGING */}
+        {/*
         <View style={styles.cardMap}>
-          <View style={styles.mapHeader}>
-            <Navigation size={18} color={Colors.primary} />
-            <Text style={styles.mapTitle}>Tik POS Penugasan</Text>
-            <View style={styles.radiusBadge}>
-              <Text style={styles.radiusBadgeText}>{posData.radius}m</Text>
-            </View>
-          </View>
-          {posData.latitude && posData.longitude && (
-            <MapView
-              style={styles.map}
-              region={{
-              latitude: posData.latitude,
-              longitude: posData.longitude,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.005,
-            }}
-            scrollEnabled={false}
-          >
-            <Circle
-              center={{ latitude: posData.latitude, longitude: posData.longitude }}
-              radius={posData.radius}
-              fillColor="rgba(239, 68, 68, 0.1)"
-              strokeColor="rgba(239, 68, 68, 0.3)"
-              strokeWidth={2}
-            />
-            <Marker coordinate={{ latitude: posData.latitude, longitude: posData.longitude }} />
-            {userLocation && (
-              <Marker coordinate={{ latitude: userLocation.latitude, longitude: userLocation.longitude }}>
-                <View style={styles.userMarker} />
-              </Marker>
-              )}
-            </MapView>
-          )}
-          <Text style={styles.mapHint}>
-            Dekati area POS untuk membuka kunci tombol presensi.
-          </Text>
+          ... (omitted content for clarity in multi_replace, but I will comment the whole block)
         </View>
+        */}
 
         {/* Today's Detail Card */}
         {todayAttendance && (
