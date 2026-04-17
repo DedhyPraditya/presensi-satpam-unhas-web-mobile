@@ -1,0 +1,18 @@
+{
+  "name": "Presensi Satpam UNHAS",
+  "short_name": "Absensi UNHAS",
+  "description": "Sistem Presensi Dan Laporan Satuan Pengamanan UNHAS",
+  "start_url": "dashboard_user.php",
+  "display": "standalone",
+  "background_color": "#eff6ff",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    {
+      "src": "assets/logo_unhas.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait"
+}
