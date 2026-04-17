@@ -22,7 +22,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public $timestamps = false;
 
     /**
      * Get the password for the user.

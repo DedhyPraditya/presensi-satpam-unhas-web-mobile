@@ -104,7 +104,7 @@ class AppServiceProvider extends ServiceProvider
             $user = \Illuminate\Support\Facades\Auth::user();
             $lastRead = $user && $user->last_read_notifications ? \Illuminate\Support\Carbon::parse($user->last_read_notifications) : \Illuminate\Support\Carbon::create(2000, 1, 1);
             $unreadCount = $notifications->filter(function($item) use ($lastRead) {
-                return $item['time_raw']->gt($lastRead);
+                return $item['time_raw'] && $item['time_raw']->gt($lastRead);
             })->count();
 
             $view->with('notifications', $sortedNotifications);
