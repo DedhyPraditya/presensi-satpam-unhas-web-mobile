@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class, 'user_id');
     }
 
+    public function pos()
+    {
+        return $this->belongsTo(PosLokasi::class, 'id_pos');
+    }
+
     public function posLokasi()
     {
         return $this->belongsTo(PosLokasi::class, 'id_pos');
