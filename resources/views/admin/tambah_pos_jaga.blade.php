@@ -52,13 +52,13 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold small">Latitude</label>
-                                        <input type="text" name="latitude" id="lat" class="form-control" required readonly>
+                                        <input type="text" name="latitude" id="lat" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold small">Longitude</label>
-                                        <input type="text" name="longitude" id="lng" class="form-control" required readonly>
+                                        <input type="text" name="longitude" id="lng" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
