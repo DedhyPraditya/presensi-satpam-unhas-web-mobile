@@ -27,18 +27,18 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'nama' => 'Administrator Satpam',
             'nip' => 'admin',
-            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+            'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
             'role' => 'admin',
-            'status' => 'aktif'
+            'status' => 'verified'
         ]);
 
         // 3. Buat User Personel Contoh (Untuk Tes Login Mobile)
         \App\Models\User::create([
             'nama' => 'Andi Personel',
             'nip' => '12345',
-            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+            'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
             'role' => 'anggota',
-            'status' => 'aktif',
+            'status' => 'verified',
             'id_pos' => $pos->id,
             'jenis_kerja' => 'shift'
         ]);

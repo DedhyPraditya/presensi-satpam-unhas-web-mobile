@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'anggota'])->default('anggota');
             $table->enum('jenis_kerja', ['non_shift', 'shift'])->default('non_shift');
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->enum('status', ['pending', 'verified'])->default('pending');
             $table->foreignId('id_pos')->nullable()->constrained('pos_lokasi')->nullOnDelete();
             $table->json('last_read_notifications')->nullable();
             $table->rememberToken();
