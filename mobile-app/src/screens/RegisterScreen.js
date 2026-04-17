@@ -34,6 +34,8 @@ export default function RegisterScreen({ navigation }) {
   // UI State
   const [loading, setLoading] = useState(false);
   const [posList, setPosList] = useState([]);
+  const [loadingPos, setLoadingPos] = useState(false);
+  const [posError, setPosError] = useState(null);
   const [showPosModal, setShowPosModal] = useState(false);
   const [showTypeModal, setShowTypeModal] = useState(false);
 
@@ -42,11 +44,28 @@ export default function RegisterScreen({ navigation }) {
   }, []);
 
   const fetchPositions = async () => {
+    setLoadingPos(true);
+    setPosError(null);
     try {
       const response = await apiClient.get('/positions');
-      setPosList(response.data.data);
+      if (response.data && Array.isArray(response.data.data)) {
+        setPosList(response.data.data);
+      } else {
+        setPosError('Format data tidak sesuai.');
+      }
     } catch (error) {
-      console.error('Fetch positions error:', error);
+      const errMsg = error.response?.data?.message
+        || error.message
+        || 'Tidak bisa menghubungi server.';
+      console.error('Fetch positions error:', errMsg);
+      setPosError(errMsg);
+      Alert.alert(
+        'Gagal Memuat Pos Jaga',
+        'Detail: ' + errMsg + '\n\nPastikan HP Anda terhubung ke internet.',
+        [{ text: 'Coba Lagi', onPress: fetchPositions }, { text: 'Batal' }]
+      );
+    } finally {
+      setLoadingPos(false);
     }
   };
 
@@ -224,23 +243,51 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Pilih POS Jaga Anda</Text>
-            <FlatList
-              data={posList}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity 
-                  style={styles.modalItem}
-                  onPress={() => {
-                    setIdPos(item.id);
-                    setNamaPos(item.nama_pos);
-                    setShowPosModal(false);
-                  }}
+            {loadingPos ? (
+              <ActivityIndicator size="large" color={Colors.primary} style={{ marginVertical: 30 }} />
+            ) : posError ? (
+              <View style={{ alignItems: 'center', paddingVertical: 20 }}>
+                <Text style={{ color: '#ef4444', textAlign: 'center', marginBottom: 15 }}>
+                  Gagal memuat data.{"\n"}(Error: {posError})
+                </Text>
+                <TouchableOpacity
+                  style={[styles.btnRegister, { paddingHorizontal: 20, height: 44, marginTop: 0 }]}
+                  onPress={fetchPositions}
                 >
-                  <MapPin size={18} color={Colors.primary} style={{ marginRight: 10 }} />
-                  <Text style={styles.modalItemText}>{item.nama_pos}</Text>
+                  <Text style={styles.btnText}>Coba Lagi</Text>
                 </TouchableOpacity>
-              )}
-            />
+              </View>
+            ) : posList.length === 0 ? (
+              <View style={{ alignItems: 'center', paddingVertical: 20 }}>
+                <Text style={{ color: '#94a3b8', textAlign: 'center', marginBottom: 15 }}>
+                  Belum ada Pos Jaga terdaftar.{"\n"}Hubungi Admin.
+                </Text>
+                <TouchableOpacity
+                  style={[styles.btnRegister, { paddingHorizontal: 20, height: 44, marginTop: 0 }]}
+                  onPress={fetchPositions}
+                >
+                  <Text style={styles.btnText}>Muat Ulang</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <FlatList
+                data={posList}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.modalItem}
+                    onPress={() => {
+                      setIdPos(item.id);
+                      setNamaPos(item.nama_pos);
+                      setShowPosModal(false);
+                    }}
+                  >
+                    <MapPin size={18} color={Colors.primary} style={{ marginRight: 10 }} />
+                    <Text style={styles.modalItemText}>{item.nama_pos}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            )}
             <TouchableOpacity style={styles.modalClose} onPress={() => setShowPosModal(false)}>
               <Text style={styles.modalCloseText}>Tutup</Text>
             </TouchableOpacity>
