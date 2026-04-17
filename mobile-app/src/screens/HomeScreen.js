@@ -36,11 +36,11 @@ export default function HomeScreen({ user, onLogout }) {
   const [isInRange, setIsInRange] = useState(false);
   const [locationError, setLocationError] = useState(null);
 
-  const posData = user?.pos || {
-    latitude: -5.13245,
-    longitude: 119.48671,
-    radius: 100,
-    nama_pos: 'POS Utama'
+  const posData = {
+    latitude: Number(user?.pos?.latitude) || -5.13245,
+    longitude: Number(user?.pos?.longitude) || 119.48671,
+    radius: Number(user?.pos?.radius) || 100,
+    nama_pos: user?.pos?.nama_pos || 'POS Utama'
   };
 
   useEffect(() => {
@@ -266,10 +266,10 @@ export default function HomeScreen({ user, onLogout }) {
               <Text style={styles.radiusBadgeText}>{posData.radius}m</Text>
             </View>
           </View>
-          <MapView
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            region={{
+          {posData.latitude && posData.longitude && (
+            <MapView
+              style={styles.map}
+              region={{
               latitude: posData.latitude,
               longitude: posData.longitude,
               latitudeDelta: 0.005,
@@ -289,8 +289,9 @@ export default function HomeScreen({ user, onLogout }) {
               <Marker coordinate={{ latitude: userLocation.latitude, longitude: userLocation.longitude }}>
                 <View style={styles.userMarker} />
               </Marker>
-            )}
-          </MapView>
+              )}
+            </MapView>
+          )}
           <Text style={styles.mapHint}>
             Dekati area POS untuk membuka kunci tombol presensi.
           </Text>
