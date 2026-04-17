@@ -7,13 +7,12 @@ import { Alert } from 'react-native';
  * Ganti BASE_URL dengan domain HTTPS Anda saat sudah online.
  */
 const API_CONFIG = {
-  LOCAL_IP: '10.10.10.244', // IP Laptop Anda sekarang
-  PRODUCTION_DOMAIN: 'absen-satpam.unhas.ac.id', // Contoh domain nanti
-  PORT: '8000',
+  PRODUCTION_DOMAIN: 'security-unhas.madignet.cloud',
   VERSION: '/api/v1'
 };
 
-const BASE_URL = `http://${API_CONFIG.LOCAL_IP}:${API_CONFIG.PORT}${API_CONFIG.VERSION}`;
+// Gunakan HTTPS untuk server produksi aaPanel agar data terenkripsi aman
+const BASE_URL = `https://${API_CONFIG.PRODUCTION_DOMAIN}${API_CONFIG.VERSION}`;
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -38,7 +37,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
+
     // Jika Unauthorized (Token mati/invalid)
     if (error.response?.status === 401) {
       console.log('Session expired or unauthorized');

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile-app",
-    "slug": "mobile-app",
+    "name": "Satpam UNHAS",
+    "slug": "satpam-unhas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.unhas.satpampresensi",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -24,6 +25,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "61cd3ae2-8cfe-4f81-aa1c-51bbcda4c3a2"
+      }
     }
   }
 }
