@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'anggota',
             'status' => 'aktif',
             'id_pos' => $pos->id,
-            'jenis_kerja' => 'Shift 1'
+            'jenis_kerja' => 'shift'
         ]);
     }
 }
