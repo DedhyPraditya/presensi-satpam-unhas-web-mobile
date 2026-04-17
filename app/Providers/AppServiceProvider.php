@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.env') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
+        \Illuminate\Support\Facades\URL::forceScheme('https'); // Force for now to be sure
+
         \Illuminate\Support\Facades\View::composer('layouts.partials.topbar', function ($view) {
             $notifications = collect();
             $today = \Illuminate\Support\Carbon::now('Asia/Makassar')->toDateString();
