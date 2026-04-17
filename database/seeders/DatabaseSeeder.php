@@ -23,6 +23,17 @@ class DatabaseSeeder extends Seeder
             'radius' => 100, // 100 meter
         ]);
 
+        // 2. Buat Pengaturan Default Sistem
+        \App\Models\AppSetting::create([
+            'jam_masuk_non_shift_pagi' => '07:30:00',
+            'jam_pulang_non_shift_pagi' => '17:00:00',
+            'jam_masuk_shift_pagi' => '07:00:00',
+            'jam_pulang_shift_pagi' => '19:00:00',
+            'jam_masuk_shift_malam' => '19:00:00',
+            'jam_pulang_shift_malam' => '07:00:00'
+        ]);
+
+
         // 2. Buat User Admin Utama
         \App\Models\User::create([
             'nama' => 'Administrator Satpam',
