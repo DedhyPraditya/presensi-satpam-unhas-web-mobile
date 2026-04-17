@@ -15,11 +15,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Buat Data POS Awal (Contoh: Rektorat UNHAS)
+        $pos = \App\Models\PosLokasi::create([
+            'nama_pos' => 'Kantor Pusat / Rektorat',
+            'latitude' => -5.131552,
+            'longitude' => 119.489155,
+            'radius' => 100, // 100 meter
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Buat User Admin Utama
+        \App\Models\User::create([
+            'nama' => 'Administrator Satpam',
+            'nip' => 'admin',
+            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+            'role' => 'admin',
+            'status' => 'aktif'
+        ]);
+
+        // 3. Buat User Personel Contoh (Untuk Tes Login Mobile)
+        \App\Models\User::create([
+            'nama' => 'Andi Personel',
+            'nip' => '12345',
+            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+            'role' => 'anggota',
+            'status' => 'aktif',
+            'id_pos' => $pos->id,
+            'jenis_kerja' => 'Shift 1'
         ]);
     }
 }
