@@ -53,7 +53,7 @@
                                                 </td>
                                                 <td>{{ $u->posLokasi?->nama_pos ?? '-' }}</td>
                                                 <td><span class="badge badge-secondary">{{ $u->jenis_kerja }}</span></td>
-                                                <td>{{ $u->created_at->format('d M Y') }}</td>
+                                                <td>{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex justify-content-center" style="gap:5px;">
                                                         <form action="{{ route('verifikasi.user.verify', $u->id) }}"
