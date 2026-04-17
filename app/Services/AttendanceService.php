@@ -61,11 +61,24 @@ class AttendanceService
             : "jam_{$type}_{$shift}";
 
         $targetTime = $setting->{$key};
-        
+        $carbonTime = Carbon::parse($time);
+        $carbonTarget = Carbon::parse($targetTime);
+
         if ($type === 'masuk') {
-            return Carbon::parse($time)->gt(Carbon::parse($targetTime)) ? 'Ya' : 'Tidak';
+            // Handle Crossover untuk Shift Malam (00:00 - 05:00)
+            if ($shift === 'shift_malam' && $carbonTime->hour >= 0 && $carbonTime->hour < 5) {
+                return 'Ya'; // Jam 12 malams/d 5 pagi sudah pasti terlambat untuk shift 19:00
+            }
+            
+            return $carbonTime->gt($carbonTarget) ? 'Ya' : 'Tidak';
         } else {
-            return Carbon::parse($time)->lt(Carbon::parse($targetTime)) ? 'Ya' : 'Tidak';
+            // Untuk Pulang
+            // Handle Crossover Pulang Shift Malam (misal jam pulang 07:00, absen jam 04:00 subuh)
+            if ($shift === 'shift_malam' && $carbonTime->hour >= 0 && $carbonTime->hour < 5 && $carbonTarget->hour >= 5) {
+                return 'Ya'; // Pulang jam 0-5 pagi saat target pulangnya jam 7 pagi = Cepat Pulang
+            }
+
+            return $carbonTime->lt($carbonTarget) ? 'Ya' : 'Tidak';
         }
     }
 }
