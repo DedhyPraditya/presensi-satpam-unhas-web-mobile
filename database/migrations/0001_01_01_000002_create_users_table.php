@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nip')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'anggota'])->default('anggota');
+            $table->enum('role', ['admin', 'user'])->default('user');
             $table->enum('jenis_kerja', ['non_shift', 'shift'])->default('non_shift');
             $table->enum('status', ['pending', 'verified'])->default('pending');
             $table->foreignId('id_pos')->nullable()->constrained('pos_lokasi')->nullOnDelete();
-            $table->json('last_read_notifications')->nullable();
+            $table->string('last_read_notifications')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
