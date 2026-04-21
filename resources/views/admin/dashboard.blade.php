@@ -173,16 +173,19 @@
                                     <td><small>{{ $u->posLokasi?->nama_pos ?? '-' }}</small></td>
                                     <td><small>{{ \Carbon\Carbon::parse($tgl)->format('d M Y') }}</small></td>
                                     <td>
-                                        @if($r && $r->jam_masuk)
-                                            <div class="font-weight-bold">{{ $r->jam_masuk }}</div>
-                                            @if($r->terlambat === 'Ya')
-                                                <span class="badge-late">Terlambat</span>
-                                            @else
-                                                <span class="badge-ok">On Time</span>
+                                            @if($link_r = $r) @endif
+                                            @if($link_r && $link_r->jam_masuk)
+                                                <div class="font-weight-bold">{{ $link_r->jam_masuk }}</div>
+                                                @if($link_r->terlambat === 'Ya')
+                                                    <span class="badge-late">Terlambat 
+                                                        @if($link_r->formatted_terlambat)
+                                                            ({{ $link_r->formatted_terlambat }})
+                                                        @endif
+                                                    </span>
+                                                @else
+                                                    <span class="badge-ok">On Time</span>
+                                                @endif
                                             @endif
-                                        @else
-                                            <span class="badge-none">-</span>
-                                        @endif
                                     </td>
                                     <td>
                                         @if($r && $r->jam_pulang)

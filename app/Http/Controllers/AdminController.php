@@ -300,7 +300,7 @@ class AdminController extends Controller
         ];
         $callback = function () use ($attendances) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['Tanggal', 'NIP', 'Nama', 'Jenis Kerja', 'POS Jaga', 'Jam Masuk', 'Jam Pulang', 'Terlambat', 'Cepat Pulang', 'Latitude', 'Longitude']);
+            fputcsv($handle, ['Tanggal', 'NIP', 'Nama', 'Jenis Kerja', 'POS Jaga', 'Jam Masuk', 'Jam Pulang', 'Terlambat', 'Cepat Pulang', 'Menit Terlambat', 'Latitude', 'Longitude']);
             foreach ($attendances as $a) {
                 fputcsv($handle, [
                     $a->tanggal instanceof \Carbon\Carbon ? $a->tanggal->format('Y-m-d') : $a->tanggal, 
@@ -312,6 +312,7 @@ class AdminController extends Controller
                     $a->jam_pulang,
                     $a->terlambat, 
                     $a->cepat_pulang,
+                    $a->menit_terlambat ?? 0,
                     $a->latitude, 
                     $a->longitude,
                 ]);

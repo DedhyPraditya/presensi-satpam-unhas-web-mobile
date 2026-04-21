@@ -65,20 +65,36 @@ class AttendanceService
         $carbonTarget = Carbon::parse($targetTime);
 
         if ($type === 'masuk') {
+            // Hitung selisih menit (total)
+            $duration = $carbonTarget->diffInMinutes($carbonTime, false);
+            
             // Handle Crossover untuk Shift Malam (00:00 - 05:00)
             if ($shift === 'shift_malam' && $carbonTime->hour >= 0 && $carbonTime->hour < 5) {
-                return 'Ya'; // Jam 12 malams/d 5 pagi sudah pasti terlambat untuk shift 19:00
+                return ['status' => 'Ya', 'duration' => $duration];
             }
             
-            return $carbonTime->gt($carbonTarget) ? 'Ya' : 'Tidak';
+            // Toleransi 10 menit
+            $status = ($duration > 10) ? 'Ya' : 'Tidak';
+            
+            return [
+                'status' => $status,
+                'duration' => max(0, $duration)
+            ];
         } else {
             // Untuk Pulang
-            // Handle Crossover Pulang Shift Malam (misal jam pulang 07:00, absen jam 04:00 subuh)
+            $duration = $carbonTime->diffInMinutes($carbonTarget, false);
+
+            // Handle Crossover Pulang Shift Malam
             if ($shift === 'shift_malam' && $carbonTime->hour >= 0 && $carbonTime->hour < 5 && $carbonTarget->hour >= 5) {
-                return 'Ya'; // Pulang jam 0-5 pagi saat target pulangnya jam 7 pagi = Cepat Pulang
+                return ['status' => 'Ya', 'duration' => $duration];
             }
 
-            return $carbonTime->lt($carbonTarget) ? 'Ya' : 'Tidak';
+            $status = ($carbonTime->lt($carbonTarget)) ? 'Ya' : 'Tidak';
+            
+            return [
+                'status' => $status,
+                'duration' => max(0, $duration)
+            ];
         }
     }
 }

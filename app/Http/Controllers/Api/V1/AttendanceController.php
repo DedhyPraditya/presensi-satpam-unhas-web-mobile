@@ -70,7 +70,9 @@ class AttendanceController extends Controller
 
         // Logic
         $shift = $this->attendanceService->determineShift($time, $user->jenis_kerja);
-        $terlambat = $this->attendanceService->evaluateStatus('masuk', $time, $shift, $user->jenis_kerja);
+        $resMasuk = $this->attendanceService->evaluateStatus('masuk', $time, $shift, $user->jenis_kerja);
+        $terlambat = $resMasuk['status'];
+        $menitTerlambat = $resMasuk['duration'];
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -81,7 +83,8 @@ class AttendanceController extends Controller
             'longitude' => $request->longitude,
             'foto_masuk' => 'attendances/' . $imageName,
             'jenis_kerja' => $shift,
-            'terlambat' => $terlambat
+            'terlambat' => $terlambat,
+            'menit_terlambat' => $menitTerlambat
         ]);
 
         return response()->json([
@@ -128,7 +131,8 @@ class AttendanceController extends Controller
         Storage::disk('public')->put('attendances/' . $imageName, $imageData);
 
         // Logic
-        $cepatPulang = $this->attendanceService->evaluateStatus('pulang', $time, $attendance->jenis_kerja, $user->jenis_kerja);
+        $resPulang = $this->attendanceService->evaluateStatus('pulang', $time, $attendance->jenis_kerja, $user->jenis_kerja);
+        $cepatPulang = $resPulang['status'];
 
         $attendance->update([
             'jam_pulang' => $time,

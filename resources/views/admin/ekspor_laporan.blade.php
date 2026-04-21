@@ -76,7 +76,7 @@
                         <td>{{ $a->jam_pulang ?? '-' }}</td>
                         <td>
                             @if($a->terlambat === 'Ya')
-                                <span class="badge-late">Terlambat</span>
+                                <span class="badge-late">Terlambat ({{ $a->formatted_terlambat }})</span>
                             @else
                                 <span class="badge-ok">Tepat Waktu</span>
                             @endif

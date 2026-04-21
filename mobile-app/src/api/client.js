@@ -8,11 +8,14 @@ import { Alert } from 'react-native';
  */
 const API_CONFIG = {
   PRODUCTION_DOMAIN: 'security-unhas.madignet.cloud',
+  LOCAL_DOMAIN: '127.0.0.1:8000', // Ganti dengan IP laptop jika testing di HP fisik
   VERSION: '/api/v1'
 };
 
-// Gunakan HTTPS untuk server produksi aaPanel agar data terenkripsi aman
-const BASE_URL = `https://${API_CONFIG.PRODUCTION_DOMAIN}${API_CONFIG.VERSION}`;
+// Gunakan HTTP untuk lokal dan HTTPS untuk produksi
+const BASE_URL = __DEV__ 
+  ? `http://${API_CONFIG.LOCAL_DOMAIN}${API_CONFIG.VERSION}`
+  : `https://${API_CONFIG.PRODUCTION_DOMAIN}${API_CONFIG.VERSION}`;
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
